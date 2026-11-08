@@ -1,35 +1,32 @@
 # Una Navidad para florecer
 
-Aplicación de Fundación Floreciendo con Amor, Navidad 2026.
+Aplicación de Fundación Floreciendo con Amor para Navidad 2026.
 
-## Estado
+Sitio: https://floreciendo-navidad.vercel.app
 
-Cliente preparado con conexión a Supabase y API de reservas transaccionales. Campaña inactiva. Configuración de correos y activación pública pendientes. Las cartas se cargarán después de aprobar la publicación.
+## Funciones activas
 
-## Publicación
+- Ocho cartas y reservas independientes de ropa y juguete, sin duplicados.
+- El padrino confirma con sus datos sin esperar un correo ni crear contraseña.
+- Rincón personal con enlace privado, sugerencias, cambios de entrega y cancelación.
+- Portal del equipo con contraseña y activación por invitación privada para correos @floreciendoconamor.org.
+- Edición y alta de perfiles, cartas públicas y fotos o videos privados para los padrinos.
+- Donaciones por QR o llave Bre-B, registro de aportes y verificación del equipo.
 
-Vercel: servir el directorio `public`, sin instalación ni compilación. `src/live-app.js` es la fuente del cliente; `public/app.js` es el archivo preparado para publicación. El cliente solo contiene la clave pública de Supabase, protegida por permisos de base de datos.
+## Pendiente
 
-## Funciones
+El envío de recordatorios es lo único pendiente del servicio de correo. Las reglas contemplan el 25 de noviembre y 2 de diciembre de 2026 y excluyen compromisos entregados o cancelados.
 
-- Compromisos independientes y sin duplicados para ropa y juguete.
-- Acceso por enlace de correo y portal del padrino.
-- Equipo interno con correo verificado del dominio floreciendoconamor.org.
-- Edición de perfiles, carga de cartas y recuerdos privados.
-- QR y llave Bre-B para aportes; registro de aviso de transferencia.
-- Reglas de recordatorio para el 25 de noviembre y 2 de diciembre de 2026. El envío aún no está conectado.
+## Infraestructura
+
+Vercel sirve `public` sin dependencias ni compilación. Supabase contiene la base de datos, permisos y archivos. La función `campaign-access` usa credenciales exclusivamente del servidor para crear accesos de invitados y consumir invitaciones del equipo. El navegador solo recibe la clave pública.
+
+La identidad de un padrino se protege mediante su enlace privado; el correo de contacto no se usa como prueba de identidad. Las altas del equipo requieren una invitación secreta, de un solo uso y asociada a su correo. Escribir un correo del dominio no concede permisos.
 
 ## Verificación
 
 `node --test lib/campaign.test.mjs`
 
-Se probaron también las reservas, cancelaciones parciales y aislamiento de datos en una transacción de Supabase revertida al finalizar.
+Las pruebas de navegador comprobaron confirmación, restauración con enlace, entrega persistida y cancelación parcial. Las pruebas de API comprobaron invitación de equipo, uso único, edición, reserva, sugerencias privadas, registro y verificación de aportes, recepción e aislamiento de perfiles. Las campañas de prueba quedan inactivas y los accesos temporales del equipo deshabilitados.
 
-## Pendientes
-
-- Configurar servicio de correo, dominio remitente y URL de retorno de autenticación.
-- Confirmar publicación de perfiles y activación de compromisos reales.
-- Cargar cartas; configurar Vercel y comprobar recorridos completos en navegador.
-- Activar programador de recordatorios y verificación de donaciones desde el portal.
-
-No guardar claves secretas en el repositorio.
+No subir claves secretas, invitaciones ni enlaces privados de padrinos al repositorio.
