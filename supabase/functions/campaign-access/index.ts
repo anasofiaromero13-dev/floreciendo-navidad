@@ -24,6 +24,22 @@ Deno.serve(async(req:Request)=>{
   const ip=req.headers.get('cf-connecting-ip')||req.headers.get('x-forwarded-for')||'unknown';
   const ok=await call('/rest/v1/rpc/consume_access_budget',{p_hash:await hash(ip),p_hour:Math.floor(Date.now()/3600000)});
   if(!ok)return reply({message:'Has realizado varios intentos. Intenta más tarde o contacta a la fundación.'},429);
+  if(body.action==='register'){
+   const email=String(body.email||'').trim().toLowerCase(),password=String(body.password||'');
+   if(email.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||password.length<12||password.length>128)return reply({message:'Usa un correo válido y una contraseña de al menos 12 caracteres.'},400);
+   if(email.split('@')[1]==='floreciendoconamor.org')return reply({message:'Los correos de la fundación ingresan desde Acceso del equipo, con su invitación privada.'},403);
+   const bearer=(req.headers.get('authorization')||'').replace(/^Bearer /i,'');
+   let existing:any=null;
+   if(bearer){try{existing=await call('/auth/v1/user',undefined,'GET',bearer)}catch{return reply({message:'Tu sesión terminó. Vuelve a ingresar.'},401)}}
+   if(existing){
+    if(existing.app_metadata?.campaign_guest!==true)return reply({message:'Tu cuenta ya está creada. Ingresa con tu correo y contraseña.'},409);
+    await call('/auth/v1/admin/users/'+existing.id,{email,password,email_confirm:true,app_metadata:{...existing.app_metadata,campaign_guest:false,campaign_account:true,contact_email:email}},'PUT');
+   }else{
+    try{await call('/auth/v1/admin/users',{email,password,email_confirm:true,app_metadata:{campaign_account:true,contact_email:email}})}
+    catch{return reply({message:'No pudimos crear la cuenta. Si ya te registraste con ese correo, elige Iniciar sesión.'},409)}
+   }
+   return reply({session:await signIn(email,password)});
+  }
   if(body.action==='guest'){
    const contact=String(body.email||'').trim().toLowerCase();
    if(contact.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact))return reply({message:'Revisa tu correo de contacto.'},400);

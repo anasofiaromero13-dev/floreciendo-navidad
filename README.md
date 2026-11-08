@@ -7,8 +7,8 @@ Sitio: https://floreciendo-navidad.vercel.app
 ## Funciones activas
 
 - Ocho cartas y reservas independientes de ropa y juguete, sin duplicados.
-- El padrino confirma con sus datos sin esperar un correo ni crear contraseña.
-- Rincón personal con enlace privado, sugerencias, cambios de entrega y cancelación.
+- El padrino se registra con su correo y contraseña, sin esperar correos de confirmación.
+- Mi rincón conserva el diseño del HTML aprobado: ropa y juguete por separado, Mi avance, Mi entrega, instrucciones, recuerdos y cancelación.
 - Portal del equipo con contraseña y activación por invitación privada para correos @floreciendoconamor.org.
 - Edición y alta de perfiles, cartas públicas y fotos o videos privados para los padrinos.
 - Donaciones por QR o llave Bre-B, registro de aportes y verificación del equipo.
@@ -21,7 +21,7 @@ El envío de recordatorios es lo único pendiente del servicio de correo. Las re
 
 Vercel sirve `public` sin dependencias ni compilación. Supabase contiene la base de datos, permisos y archivos. La función `campaign-access` usa credenciales exclusivamente del servidor para crear accesos de invitados y consumir invitaciones del equipo. El navegador solo recibe la clave pública.
 
-La identidad de un padrino se protege mediante su enlace privado; el correo de contacto no se usa como prueba de identidad. Las altas del equipo requieren una invitación secreta, de un solo uso y asociada a su correo. Escribir un correo del dominio no concede permisos.
+Los padrinos ingresan con correo y contraseña. Las cuentas externas no requieren verificar el correo y nunca reciben acceso interno. Los accesos antiguos por enlace pueden convertirse en cuentas sin perder sus compromisos. Las altas del equipo requieren una invitación secreta, de un solo uso y asociada a su correo. Escribir un correo del dominio no concede permisos.
 
 ## Verificación
 
