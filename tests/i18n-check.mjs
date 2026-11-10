@@ -15,6 +15,7 @@ assert.equal(t('559 389 1026'),'559 389 1026');
 assert.equal(t('Sandra M Romero'),'Sandra M Romero');
 assert.equal(t('Salomé Alejandra'),'Salomé Alejandra');
 assert.equal(t('3 años'),'3 years old');
+assert.equal(t('Mi avance para Ropa de Sara'),'My progress for clothing for Sara');
 assert.match(t('El certificado de donación está disponible solo para donantes colombianos. No emitimos recibos fiscales de Estados Unidos.'),/only to Colombian donors/);
 assert.match(t('Me comprometo a entregar ropa y juguete nuevos y etiquetados con el nombre de Sara hasta el 9 de diciembre.'),/new clothing and a toy.*Sara/);
 assert.equal(t('Contenido personal que no tiene traducción'),'Contenido personal que no tiene traducción');

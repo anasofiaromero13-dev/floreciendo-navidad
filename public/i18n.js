@@ -14,6 +14,8 @@
   if((m=s.match(/^Talla: (.+)$/)))return 'Size: '+english(m[1]);
   if((m=s.match(/^Color: (.+)$/)))return 'Color: '+english(m[1]);
   if((m=s.match(/^talla (.+)$/)))return 'size '+english(m[1]);
+  if((m=s.match(/^Mi avance para (Ropa|Juguete) de (.+)$/)))return `My progress for ${m[1]==='Ropa'?'clothing':'a toy'} for ${m[2]}`;
+  if((m=s.match(/^No pudimos enviar tu pregunta\. (.+)$/)))return "We couldn't send your question. "+english(m[1]);
   if((m=s.match(/^(La carta de|Carta original de|Foto de la carta original de|Ver carta original de|Mi avance para) (.+)$/))){const prefix={'La carta de':'Letter from','Carta original de':'Original letter from','Foto de la carta original de':'Photo of the original letter from','Ver carta original de':'View the original letter from','Mi avance para':'My progress for'};return prefix[m[1]]+' '+m[2]}
   if((m=s.match(/^Un regalo para (.+)$/)))return 'A gift for '+m[1];
   if((m=s.match(/^Todavía podemos buscar otra forma de acompañar a (.+)\.$/)))return `We can still find another way to support ${m[1]}.`;
