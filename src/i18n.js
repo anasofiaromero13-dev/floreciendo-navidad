@@ -72,14 +72,14 @@
    const next=language==='en'?url.toString():record.source;
    record.last=next;links.set(link,record);if(current!==next)link.setAttribute('href',next);
   });
-  const selector=document.getElementById('site-language');if(selector)selector.value=language;
+  document.querySelectorAll('[data-site-language]').forEach(selector=>selector.value=language);
   document.title=language==='en'?'A Christmas in bloom · Floreciendo con Amor':'Una Navidad para florecer · Floreciendo con Amor';
  }
  window.setSiteLanguage=value=>{
   language=value==='en'?'en':'es';try{localStorage.setItem('floreciendo-language',language);const url=new URL(location.href);url.searchParams.set('lang',language);history.replaceState(null,'',url)}catch{}
   apply();
  };
- const selector=document.getElementById('site-language');if(selector)selector.addEventListener('change',event=>window.setSiteLanguage(event.target.value));
+ document.querySelectorAll('[data-site-language]').forEach(selector=>selector.addEventListener('change',event=>window.setSiteLanguage(event.target.value)));
  apply();
  new MutationObserver(()=>apply()).observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['aria-label','alt','placeholder','title']});
 })();
