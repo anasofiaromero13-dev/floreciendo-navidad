@@ -6,6 +6,9 @@
   const s=normalize(source);
   if(Object.prototype.hasOwnProperty.call(dictionary,s))return dictionary[s];
   let m;
+  if(s.startsWith("Ver carta y foto: "))return "View letter and photo: "+s.slice(18);
+  if(s.startsWith("Leer carta original: "))return "Read original letter: "+s.slice(21);
+  if(s.startsWith("Foto de ")&&!s.startsWith("Foto de la carta original de "))return "Photo of "+s.slice(8);
   if((m=s.match(/^Quedan (\d+) días$/)))return `${m[1]} days left`;
   if(s==='Queda 1 día')return '1 day left';
   if((m=s.match(/^A (\d+) niños todavía les faltan regalos$/)))return `${m[1]} children still need gifts`;
