@@ -42,7 +42,7 @@ function giftNeeds(children, rows) {
 __QUESTIONS__
 __GIFT_SUGGESTIONS__
 __RENDER__
-function person(row){return {...row,uuid:row.id,id:row.code,name:row.display_name,age:row.age_years===null?'Edad por confirmar':row.age_years+' años',likes:row.interests,size:row.clothing_size,color:row.favorite_color,image:row.letter_url,icon:'✿'}}
+function person(row){return {...row,uuid:row.id,id:row.code,name:row.display_name,age:row.code==='N14'&&row.age_years===0?'2 meses':row.code==='N15'&&row.age_years===2?'2 años y 9 meses':row.age_years===null?'Edad por confirmar':row.age_years+' años',likes:row.interests,size:row.clothing_size,color:row.favorite_color,image:row.letter_url,icon:'✿'}}
 async function loadCatalog(){const cs=await api('/rest/v1/campaigns?slug=eq.navidad-2026&select=id,deadline,active,accepting_sponsorships,bank_details',{auth:false});campaign=cs[0];if(!campaign){$('cards').innerHTML='<p class="empty">Estamos preparando las cartas. Muy pronto podrás escoger la tuya.</p>';$('available').textContent='Próximamente';return}const rows=await api('/rest/v1/children?campaign_id=eq.'+campaign.id+'&select=id,code,display_name,age_years,interests,clothing_size,favorite_color,letter_url,clothes_available,toy_available,published&order=code',{auth:!!user});people.splice(0,people.length,...rows.map(person));render()}
 async function authenticate(){if(!session)return;try{user=await api('/auth/v1/user');staff=await rpc('current_user_is_staff',{});}catch{saveSession(null);user=null;staff=false}}
 async function signOut(){try{await api('/auth/v1/logout',{method:'POST'})}finally{saveSession(null);localStorage.removeItem('floreciendo-private-key');user=null;staff=false;closeModal()}}
