@@ -22,14 +22,14 @@ function partsFor(kind){return kind==='both'?['clothes','toy']:[kind]}
 function matchesFilter(p,value){const clothes=!activeClaim(p.id,'clothes'),toy=!activeClaim(p.id,'toy');return value==='clothes'?clothes:value==='toy'?toy:value==='both'?clothes&&toy:true}
 function openModal(title,html){lastFocus=document.activeElement;$('modal-title').textContent=title;$('modal-content').innerHTML=html;if(!$('modal').open)$('modal').showModal();$('modal').scrollTop=0;}
 function closeModal(){$('modal').close()}
-const portraitCodes = new Set(['N01','N02','N03','N04','N05','N07','N08','N09','N10','N13','N14','N15','N16','N17','N18']);
+const portraitCodes = new Set(['N01','N02','N03','N04','N05','N07','N08','N09','N10','N12','N13','N14','N15','N16','N17','N18']);
 function portraitFor(person) {
  return portraitCodes.has(person.id) ? '/portraits/' + person.id + '.jpeg' : '';
 }
 function letterThumbnail(person) {
  const portrait = portraitFor(person);
  const label = portrait ? 'Ver carta y foto' : 'Leer carta original';
- return `<button type="button" class="thumb ${portrait?'has-portrait':''}" onclick="showLetter('${esc(person.id)}')" aria-label="${label}: ${esc(person.name)}"><img class="thumb-letter" src="${esc(person.image)}" alt="" loading="lazy">${portrait?`<img class="thumb-portrait" src="${portrait}" alt="" loading="lazy">`:''}<span class="view">${label}</span></button>`;
+ return `<button type="button" class="thumb ${portrait?'has-portrait':''}" onclick="showLetter('${esc(person.id)}')" aria-label="${label}: ${esc(person.name)}"><img class="thumb-letter" src="${esc(person.image)}" alt="" loading="lazy">${portrait?`<img class="thumb-portrait" data-portrait="${esc(person.id)}" src="${portrait}" alt="" loading="lazy">`:''}<span class="view">${label}</span></button>`;
 }
 function showLetter(id) {
  const person = people.find(entry => entry.id === id);
