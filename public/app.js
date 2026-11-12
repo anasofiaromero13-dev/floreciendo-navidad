@@ -22,7 +22,7 @@ function partsFor(kind){return kind==='both'?['clothes','toy']:[kind]}
 function matchesFilter(p,value){const clothes=!activeClaim(p.id,'clothes'),toy=!activeClaim(p.id,'toy');return value==='clothes'?clothes:value==='toy'?toy:value==='both'?clothes&&toy:true}
 function openModal(title,html){lastFocus=document.activeElement;$('modal-title').textContent=title;$('modal-content').innerHTML=html;if(!$('modal').open)$('modal').showModal();$('modal').scrollTop=0;}
 function closeModal(){$('modal').close()}
-const portraitCodes = new Set(['N01','N02','N03','N04','N05','N07','N08','N09','N10','N12','N13','N14','N15','N16','N17','N18']);
+const portraitCodes = new Set(['N01','N02','N03','N04','N05','N07','N08','N09','N10','N11','N12','N13','N14','N15','N16','N17','N18']);
 function portraitFor(person) {
  return portraitCodes.has(person.id) ? '/portraits/' + person.id + '.jpeg' : '';
 }
