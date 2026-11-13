@@ -74,10 +74,21 @@ let staffNeeds=[];
 function giftNeedLabel(gift){if(gift.received)return '<span class="need-done">'+(gift.claim.distributed_at?'Entregado en la novena':'Recibido')+'</span>';if(gift.unclaimed)return '<span class="need-open">Sin padrino</span>';return gift.claim.donor_status==='delivered'?'Padrino ya entregó · por registrar recepción':gift.claim.donor_status==='purchased'?'Comprado · por recibir':'Comprometido · por recibir'}
 function needsRows(entries,mode){const list=entries.filter(e=>mode==='all'||mode==='missing'&&e.missing||mode==='unclaimed'&&e.unclaimed||mode==='promised'&&[e.clothes,e.toy].some(g=>g.claim&&!g.received));return list.length?list.map(e=>`<tr><td><strong>${esc(e.child.name)}</strong><br>${esc(e.child.id)}${!e.child.published?' · Sin publicar':''}</td><td>${giftNeedLabel(e.clothes)}</td><td>${giftNeedLabel(e.toy)}</td><td><button class="filter" onclick="editPerson('${e.child.id}')">Ver / editar</button></td></tr>`).join(''):'<tr><td colspan="4">No hay regalos pendientes en este grupo ♡</td></tr>'}
 function filterNeeds(mode,button){$('needs-rows').innerHTML=needsRows(staffNeeds,mode);document.querySelectorAll('#logistics-filters .filter').forEach(b=>b.classList.toggle('active',b===button))}
+async function sendGmailTest(button){
+ button.disabled=true;
+ const status=button.nextElementSibling;
+ try{
+  await authenticate();
+  if(!staff||!session)throw Error('Vuelve a iniciar sesión como parte del equipo.');
+  const response=await fetch('/api/gmail/test',{method:'POST',headers:{Authorization:'Bearer '+session.access_token}});
+  if(!response.ok)throw Error(await response.text());
+  status.textContent='Prueba enviada a donaciones@floreciendoconamor.org.';
+ }catch(error){status.textContent=error.message;button.disabled=false}
+}
 async function gmailConnectionStatus(){
  try{
   const connected=await rpc('campaign_gmail_status',{});
-  return connected?'<p class="notice">Gmail conectado · donaciones@floreciendoconamor.org</p>':'<button type="button" class="btn outline" onclick="connectGmail(this)">Conectar Gmail</button>';
+  return connected?'<p class="notice">Gmail conectado · donaciones@floreciendoconamor.org</p><button type="button" class="btn outline" onclick="sendGmailTest(this)">Enviar correo de prueba</button><p class="micro" role="status"></p>':'<button type="button" class="btn outline" onclick="connectGmail(this)">Conectar Gmail</button>';
  }catch{return '<p class="micro">No pudimos consultar la conexión de Gmail.</p>'}
 }
 async function finishGmail(hash){
