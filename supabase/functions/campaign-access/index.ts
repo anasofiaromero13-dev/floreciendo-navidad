@@ -40,6 +40,20 @@ Deno.serve(async(req:Request)=>{
    }
    return reply({session:await signIn(email,password)});
   }
+  if(body.action==='sponsor-email'){
+   const email=String(body.email||'').trim().toLowerCase();
+   if(email.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return reply({message:'Revisa tu correo de contacto.'},400);
+   if(['floreciendoconamor.org','access.floreciendoconamor.invalid'].includes(email.split('@')[1]))return reply({message:'Usa el acceso del equipo o un correo personal.'},403);
+   const existing=await call('/rest/v1/rpc/campaign_sponsor_login_email',{p_email:email});
+   if(existing){
+    const link=await call('/auth/v1/admin/generate_link',{type:'magiclink',email:existing});
+    return reply({session:await call('/auth/v1/verify',{type:'magiclink',token_hash:link.hashed_token})});
+   }
+   const guestEmail='guest-'+crypto.randomUUID()+'@access.floreciendoconamor.invalid';
+   const password=random();
+   await call('/auth/v1/admin/users',{email:guestEmail,password,email_confirm:true,app_metadata:{campaign_guest:true,contact_email:email}});
+   return reply({session:await signIn(guestEmail,password)});
+  }
   if(body.action==='guest'){
    const contact=String(body.email||'').trim().toLowerCase();
    if(contact.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact))return reply({message:'Revisa tu correo de contacto.'},400);
